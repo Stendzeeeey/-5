@@ -1,0 +1,52 @@
+1.	Сформировать случайным образом вектор из 20 элементов от 1 до 10000. Вывести его на экран. 
+Удалить из него все элементы, в которых есть цифра k. 
+Обязательно использовать предикаты.
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+bool contains_digit(int n, int k) {
+    while (n > 0) {
+        if (n % 10 == k) {
+            return true;
+        }
+        n /= 10;
+    }
+    return false;
+}
+
+int main() {
+    srand(time(nullptr));
+
+    vector<int> v(20);
+    for (int i = 0; i < v.size(); i++) {
+        v[i] = rand() % 10000 + 1;
+    }
+
+    cout << "Исходный вектор:" << endl;
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+
+    int k;
+    cout << "Введите цифру, которую нужно удалить: ";
+    cin >> k;
+
+    v.erase(remove_if(v.begin(), v.end(), [k](int n) {
+        return contains_digit(n, k);
+    }), v.end());
+
+    cout << "Измененный вектор: " << endl;
+    for (int i = 0; i < v.size(); i++) {
+        cout << v[i] << " ";
+    }
+    cout << endl;
+
+    return 0;
+}

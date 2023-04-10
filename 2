@@ -1,0 +1,46 @@
+2.	Считать из трех текстовых файлов три множества слов (set1, set2 и set3).
+Слова в разных множествах могут повторяться. 
+Сформировать еще одно множество, которое будет содержать слова, имеющиеся в первом или втором множестве, но которых нет в третьем множестве.
+Обязательно использовать алгоритмы работы  с множествами!
+
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <algorithm>
+
+using namespace std;
+
+set<string> readSetFromFile(const string& filename) {
+    set<string> result;
+    ifstream file(filename);
+    if (file.is_open()) {
+        string word;
+        while (file >> word) {
+            result.insert(word);
+        }
+        file.close();
+    }
+    return result;
+}
+
+void printSet(const set<string>& s) {
+    for (const auto& elem : s) {
+        cout << elem << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    set<string> set1 = readSetFromFile("set1.txt");
+    set<string> set2 = readSetFromFile("set2.txt");
+    set<string> set3 = readSetFromFile("set3.txt");
+
+    set<string> result;
+    set_union(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(result, result.end()));
+    set_difference(result.begin(), result.end(), set3.begin(), set3.end(), inserter(result, result.end()));
+
+    cout << "Результат: ";
+    printSet(result);
+
+    return 0;
+}

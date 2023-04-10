@@ -1,0 +1,47 @@
+3.	Создать с помощью контейнера map список городов (город-страна). Данные считывать из текстового файла. Вывести на экран весь список. 
+Вывести страну, в которой находится указанный город. 
+Удалить из списка данный город и снова вывести список на экран.
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <map>
+
+using namespace std;
+
+int main() {
+    map<string, string> cities;
+    string filename, city, country;
+
+    cout << "Введите имя файла: ";
+    cin >> filename;
+    ifstream file(filename);
+    while (file >> city >> country) {
+        cities[city] = country;
+    }
+    file.close();
+
+    cout << "Список городов:\n";
+    for (auto it = cities.begin(); it != cities.end(); it++) {
+        cout << it->first << " - " << it->second << endl;
+    }
+
+    // находим страну по городу
+    cout << "Введите название города: ";
+    cin >> city;
+    auto it = cities.find(city);
+    if (it != cities.end()) {
+        cout << "Город " << city << " находится в стране " << it->second << endl;
+
+        cities.erase(it);
+
+        cout << "Измененный список городов:\n";
+        for (auto it = cities.begin(); it != cities.end(); it++) {
+            cout << it->first << " - " << it->second << endl;
+        }
+    } else {
+        cout << "Город " << city << " не найден в списке." << endl;
+    }
+
+    return 0;
+}
